@@ -1,0 +1,3 @@
+SIZE = WIDTH, HEIGHT = 1100, 800
+
+FPS = 80
