@@ -63,7 +63,7 @@ class CarSprite(pygame.sprite.Sprite):
     def __init__(self, *groups):
         super().__init__(*groups)
         # машинка по-умолчанию
-        self.image = pygame.transform.scale(load_image('car2.png'), CAR_SIZE)
+        self.image = pygame.transform.scale(load_image('car2.png', -1), CAR_SIZE)
 
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -87,15 +87,11 @@ class PauseSprite(pygame.sprite.Sprite):
         self.play = pygame.transform.scale(load_image('play.png', -1),
                                            (100, 100))
 
-        self.image = self.pause
+        self.image = self.play
 
         self.rect = self.image.get_rect()
         self.rect.x = 950
         self.rect.y = 35
-
-    # def update(self):
-        # Если нажата кнопка pause, поменять на кнопку play, и наоборот
-        # self.image = self.play
 
 
 def board_creator(all_sprites, screen, car_sprite, pause_sprite):
