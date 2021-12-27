@@ -35,6 +35,6 @@ def results_screen(screen):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if start_button.collidepoint(*event.pos):
-                        return 'start'
+                        return 'first'
 
         pygame.display.flip()

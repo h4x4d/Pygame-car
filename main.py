@@ -8,18 +8,18 @@ pygame.init()
 pygame.display.set_caption('Car')
 screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
+action = 'first'
 
-start = start_screen(screen)
-if start == 'close':
-    exit()
-elif start == 'start':
-    game = Game(screen)
-elif start == 'results':
-    results = results_screen(screen)
-    if results == 'close':
+while action == 'first':
+    action = start_screen(screen)
+    if action == 'close':
         exit()
-    elif results == 'start':
+    elif action == 'start':
         game = Game(screen)
+    elif action == 'results':
+        action = results_screen(screen)
+        if action == 'close':
+            exit()
 
 
 running = True
