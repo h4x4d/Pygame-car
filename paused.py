@@ -4,19 +4,19 @@ from loader import load_image
 
 def pause_screen(screen):
     showing = True
-    image = load_image('start_screen.png')
+    image = load_image('pause_screen.png')
     screen.blit(image, (0, 0))
-    start_button = pygame.Rect(0, 663, 369, 106)
-    result_button = pygame.Rect(0, 531, 291, 106)
+    start_button = pygame.Rect(400, 319, 300, 70)
+    main_button = pygame.Rect(400, 411, 300, 70)
     pygame.display.flip()
     while showing:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return 'close'
+                exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if start_button.collidepoint(*event.pos):
                         return 'start'
-                    elif result_button.collidepoint(*event.pos):
-                        return 'results'
+                    elif main_button.collidepoint(*event.pos):
+                        return 'main'
         pygame.display.flip()

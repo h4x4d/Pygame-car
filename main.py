@@ -9,35 +9,50 @@ pygame.init()
 pygame.display.set_caption('Car')
 screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
-action = 'first'
 
-while action == 'first':
-    action = start_screen(screen)
-    if action == 'close':
-        exit()
-    elif action == 'start':
-        game = Game(screen)
-    elif action == 'results':
-        action = results_screen(screen)
+while True:
+    action = 'first'
+
+    while action == 'first':
+        action = start_screen(screen)
         if action == 'close':
             exit()
+        elif action == 'start':
+            game = Game(screen)
+        elif action == 'results':
+            action = results_screen(screen)
+            if action == 'close':
+                exit()
 
+    running = True
+    pause = ''
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if game.pause_button.collidepoint(*event.pos):
-                pause = pause_screen(screen)
+    while running:
 
-    if pygame.key.get_pressed()[pygame.K_RIGHT]:
-        game.update_car(5)
-    elif pygame.key.get_pressed()[pygame.K_LEFT]:
-        game.update_car(-5)
-    game.update()
-    pygame.display.flip()
-    clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if game.pause_button.collidepoint(*event.pos):
+                    pause = pause_screen(screen)
+                    if pause == 'start':
+                        game = Game(screen)
+                    elif pause == 'main':
+                        break
 
-pygame.quit()
+        if pause == 'main':
+            break
+
+        if pygame.key.get_pressed()[pygame.K_RIGHT]:
+            game.update_car(5)
+        elif pygame.key.get_pressed()[pygame.K_LEFT]:
+            game.update_car(-5)
+        game.update()
+        pygame.display.flip()
+        clock.tick(FPS)
+
+    if pause == 'main':
+        continue
+
+    pygame.quit()
+    break
