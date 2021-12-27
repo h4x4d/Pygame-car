@@ -8,6 +8,7 @@ def pause_screen(screen):
     screen.blit(image, (0, 0))
     start_button = pygame.Rect(400, 319, 300, 70)
     main_button = pygame.Rect(400, 411, 300, 70)
+    continue_button = pygame.Rect(950, 35, 100, 100)
     pygame.display.flip()
     while showing:
         for event in pygame.event.get():
@@ -19,4 +20,7 @@ def pause_screen(screen):
                         return 'start'
                     elif main_button.collidepoint(*event.pos):
                         return 'main'
+                    elif continue_button.collidepoint(*event.pos):
+                        return ''
+
         pygame.display.flip()
