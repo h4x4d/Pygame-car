@@ -82,12 +82,8 @@ class PauseSprite(pygame.sprite.Sprite):
 
     def __init__(self, *groups):
         super().__init__(*groups)
-        self.pause = pygame.transform.scale(load_image('pause.png'),
-                                            (100, 100))
-        self.play = pygame.transform.scale(load_image('play.png', -1),
+        self.image = pygame.transform.scale(load_image('play.png', -1),
                                            (100, 100))
-
-        self.image = self.play
 
         self.rect = self.image.get_rect()
         self.rect.x = 950
