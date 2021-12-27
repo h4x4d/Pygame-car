@@ -1,6 +1,6 @@
 import pygame
 
-from border import border_creator
+from board import board_creator
 from loader import load_image
 from settings.constants import SIZE
 
@@ -9,22 +9,22 @@ class Game:
     def __init__(self, screen):
         self.screen = screen
 
-        image = pygame.transform.scale(load_image('process.png'), SIZE)
-        screen.blit(image, (0, 0))
+        self.image = pygame.transform.scale(load_image('process.png'), SIZE)
+        screen.blit(self.image, (0, 0))
 
-        all_sprites = pygame.sprite.Group()
+        self.all_sprites = pygame.sprite.Group()
+        self.car = pygame.sprite.Group()
+        self.pause = pygame.sprite.Group()
+        self.pause_button = pygame.Rect(950, 35, 100, 100)
 
+        board_creator(self.all_sprites, self.screen, self.car, self.pause)
 
-        border_creator(all_sprites, screen)
+        self.screen.blit(self.image, (0, 0))
 
-        showing = True
-        while showing:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    exit()
-            screen.blit(image, (0, 0))
+    def update(self):
+        self.screen.blit(self.image, (0, 0))
+        self.all_sprites.draw(self.screen)
+        self.all_sprites.update()
 
-            all_sprites.draw(self.screen)
-            all_sprites.update()
-
-            pygame.display.flip()
+    def update_car(self, state):
+        self.car.update(state)

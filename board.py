@@ -1,9 +1,9 @@
 import pygame
-from settings.constants import BORDER_SIZE
+from settings.constants import BOARD_SIZE, BOARD_POS
 from settings.constants import CAR_SIZE
 from loader import load_image
 
-x, y = BORDER_SIZE
+x, y = BOARD_SIZE
 
 
 class FieldSprite(pygame.sprite.Sprite):
@@ -11,13 +11,20 @@ class FieldSprite(pygame.sprite.Sprite):
 
     def __init__(self, *groups):
         super().__init__(*groups)
-        self.image = pygame.Surface(BORDER_SIZE, pygame.SRCALPHA, 32)
-
-        pygame.draw.rect(self.image, (0, 0, 0), (0, 0, x, y), 0)
-
+        self.full_image = load_image('road.png')
+        self.image = pygame.Surface((500, 600))
+        self.image.blit(self.full_image, (0, 0))
         self.rect = self.image.get_rect()
-        self.rect.x = 275
-        self.rect.y = 100
+        self.rect.x, self.rect.y = BOARD_POS
+
+        self.p = 0
+
+    def update(self):
+        self.p -= 10
+        if self.p < 0:
+            self.p = 600
+
+        self.image.blit(self.full_image, (0, 0), (0, self.p, 500, 600))
 
 
 class CoinsSprite(pygame.sprite.Sprite):
@@ -28,7 +35,7 @@ class CoinsSprite(pygame.sprite.Sprite):
         self.screen = screen
 
         self.image = pygame.Surface((150, 35), pygame.SRCALPHA, 32)
-        pygame.draw.rect(self.image, (0, 0, 0), (0, 0, 150, 35), 2)
+        pygame.draw.rect(self.image, 'white', (0, 0, 150, 35), 2)
 
         self.font = pygame.font.Font('fonts/result-font.ttf', 20)
         self.text = '0'
@@ -44,7 +51,7 @@ class CoinsSprite(pygame.sprite.Sprite):
         self.text = str(int(self.text) + 1)
 
         self.image = pygame.Surface((150, 35), pygame.SRCALPHA, 32)
-        pygame.draw.rect(self.image, (0, 0, 0), (0, 0, 150, 35), 2)
+        pygame.draw.rect(self.image, 'white', (0, 0, 150, 35), 2)
 
         i = self.font.render(self.text, True, 'white')
         self.image.blit(i, (5, 5))
@@ -56,16 +63,18 @@ class CarSprite(pygame.sprite.Sprite):
     def __init__(self, *groups):
         super().__init__(*groups)
         # машинка по-умолчанию
-        self.image = pygame.transform.scale(load_image('car.png'), CAR_SIZE)
+        self.image = pygame.transform.scale(load_image('car2.png'), CAR_SIZE)
 
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = 475
-        self.rect.y = 450
+        self.rect.x = BOARD_POS[0] + BOARD_SIZE[0] // 2 - 50
+        self.rect.y = BOARD_POS[1] + BOARD_SIZE[1] // 2 + 50
 
     def update(self, *args):
         if args:
-            self.image = pygame.transform.scale(load_image(f'{args[0]}.png'), CAR_SIZE)
+            if BOARD_POS[0] + BOARD_SIZE[0] - CAR_SIZE[0] > \
+                    self.rect.x + args[0] > BOARD_POS[0]:
+                self.rect.x += args[0]
 
 
 class PauseSprite(pygame.sprite.Sprite):
@@ -73,8 +82,10 @@ class PauseSprite(pygame.sprite.Sprite):
 
     def __init__(self, *groups):
         super().__init__(*groups)
-        self.pause = pygame.transform.scale(load_image('pause.png'), (100, 100))
-        self.play = pygame.transform.scale(load_image('play.png', -1), (100, 100))
+        self.pause = pygame.transform.scale(load_image('pause.png'),
+                                            (100, 100))
+        self.play = pygame.transform.scale(load_image('play.png', -1),
+                                           (100, 100))
 
         self.image = self.pause
 
@@ -87,11 +98,11 @@ class PauseSprite(pygame.sprite.Sprite):
         # self.image = self.play
 
 
-def border_creator(all_sprites, screen):
+def board_creator(all_sprites, screen, car_sprite, pause_sprite):
     FieldSprite(all_sprites)
 
     CoinsSprite(screen, all_sprites)
 
-    CarSprite(all_sprites)
+    CarSprite(all_sprites, car_sprite)
 
-    PauseSprite(all_sprites)
+    PauseSprite(all_sprites, pause_sprite)
