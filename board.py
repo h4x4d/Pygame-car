@@ -16,6 +16,10 @@ class ConeSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = random.randint(BOARD_POS[0], BOARD_SIZE[0] +
                                                   BOARD_POS[0] - 30), 100
+        if pygame.sprite.spritecollideany(self, collide):
+            self.image = pygame.Surface([1, 1], pygame.SRCALPHA, 32)
+            self.rect.x = 1
+            self.rect.y = 1
 
     def update(self, car):
         self.rect.y += 10
