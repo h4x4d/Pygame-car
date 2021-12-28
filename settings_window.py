@@ -122,9 +122,10 @@ def settings_screen(screen):
     font = pygame.font.Font('fonts/result-font.ttf', 40)
 
     showing = True
-    #image = pygame.transform.scale(load_image('settings_timed.png'), SIZE)
+    # picture = pygame.transform.scale(load_image('pause_screen.png'), SIZE)
+
     image = pygame.Surface([*SIZE])
-    image.fill('black')
+    image.fill('white')
 
     pygame.draw.rect(image, 'red', (0, 31, 334, 86))
     image.blit(font.render('Назад', True, 'white'), (90, 50))
