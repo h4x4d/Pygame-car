@@ -6,7 +6,7 @@ from settings.constants import SIZE
 
 
 class Game:
-    def __init__(self, screen):
+    def __init__(self, screen, car):
         self.screen = screen
 
         self.image = pygame.transform.scale(load_image('process.png'), SIZE)
@@ -17,7 +17,7 @@ class Game:
         self.pause = pygame.sprite.Group()
         self.pause_button = pygame.Rect(950, 35, 100, 100)
 
-        board_creator(self.all_sprites, self.screen, self.car, self.pause)
+        board_creator(car, self.all_sprites, self.screen, self.car, self.pause)
 
         self.screen.blit(self.image, (0, 0))
 

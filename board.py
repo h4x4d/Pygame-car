@@ -60,10 +60,10 @@ class CoinsSprite(pygame.sprite.Sprite):
 class CarSprite(pygame.sprite.Sprite):
     # машинка
 
-    def __init__(self, *groups):
+    def __init__(self, car, *groups):
         super().__init__(*groups)
         # машинка по-умолчанию
-        self.image = pygame.transform.scale(load_image('car2.png', -1), CAR_SIZE)
+        self.image = pygame.transform.scale(load_image(f'{car}.png', -1), CAR_SIZE)
 
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -90,11 +90,11 @@ class PauseSprite(pygame.sprite.Sprite):
         self.rect.y = 35
 
 
-def board_creator(all_sprites, screen, car_sprite, pause_sprite):
+def board_creator(car, all_sprites, screen, car_sprite, pause_sprite):
     FieldSprite(all_sprites)
 
     CoinsSprite(screen, all_sprites)
 
-    CarSprite(all_sprites, car_sprite)
+    CarSprite(car, all_sprites, car_sprite)
 
     PauseSprite(all_sprites, pause_sprite)
