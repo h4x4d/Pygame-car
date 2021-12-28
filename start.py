@@ -9,7 +9,7 @@ def start_screen(screen):
     screen.blit(image, (0, 0))
 
     image_settings = pygame.transform.scale(
-        load_image('settings_mask.png', -1), (100, 100))
+        load_image('settings_mask.png'), (100, 100))
     screen.blit(image_settings, (980, 670))
 
     start_button = pygame.Rect(0, 663, 369, 106)

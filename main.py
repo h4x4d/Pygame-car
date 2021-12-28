@@ -5,6 +5,7 @@ from start import start_screen
 from game import Game
 from results import results_screen
 from paused import pause_screen
+from finish import finish_screen
 
 args = ARGS
 
@@ -53,7 +54,15 @@ while True:
             game.update_car(args[2])
         elif pygame.key.get_pressed()[pygame.K_LEFT]:
             game.update_car(-args[2])
-        game.update()
+        finish = game.update()
+        if finish:
+            finish = finish_screen(screen, game.coins.sprites()[0].coin())
+            if finish == 'start':
+                game = Game(screen, args[0])
+            elif finish == 'main':
+                pause = 'main'
+                break
+
         pygame.display.flip()
         clock.tick(FPS)
 
