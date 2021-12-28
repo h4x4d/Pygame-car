@@ -55,6 +55,9 @@ while True:
         elif pygame.key.get_pressed()[pygame.K_LEFT]:
             game.update_car(-args[2])
         finish = game.update()
+        n = game.coins.sprites()[0].text
+        if n == '500' or n == '1000':
+            game.board.sprites()[0].speed += 5
         if finish:
             finish = finish_screen(screen, game.coins.sprites()[0].coin())
             if finish == 'start':

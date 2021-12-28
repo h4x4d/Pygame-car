@@ -9,3 +9,5 @@ BOARD_POS = 300, 100
 ARGS = ['car2', 'выкл', 5]
 
 FPS = 80
+
+car_speed = 5
