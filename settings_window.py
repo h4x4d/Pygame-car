@@ -1,6 +1,5 @@
 import pygame
 from loader import load_image
-from settings.constants import SIZE
 
 
 class Area1:
@@ -8,10 +7,10 @@ class Area1:
         self.font = pygame.font.Font('fonts/result-font.ttf', 40)
         self.font_small = pygame.font.Font('fonts/result-font.ttf', 20)
 
-        self.area = pygame.Surface([1080, 200])
-        self.area.fill(pygame.Color("white"))
+        image = pygame.Surface([1080, 200], pygame.SRCALPHA, 32)
+        self.area = image.convert_alpha()
 
-        self.area.blit(self.font.render('Выбор машинки', True, 'black'), (375, 10))
+        self.area.blit(self.font.render('Выбор машинки', True, 'white'), (375, 10))
         pygame.draw.rect(self.area, 'black', (26, 100, 250, 80), 2)
         pygame.draw.rect(self.area, 'black', (292, 100, 250, 80), 2)
         pygame.draw.rect(self.area, 'black', (558, 100, 250, 80), 2)
@@ -65,10 +64,10 @@ class Area2:
         self.font = pygame.font.Font('fonts/result-font.ttf', 40)
         self.font_small = pygame.font.Font('fonts/result-font.ttf', 20)
 
-        self.area = pygame.Surface([1080, 200])
-        self.area.fill(pygame.Color("white"))
+        image = pygame.Surface([1080, 200], pygame.SRCALPHA, 32)
+        self.area = image.convert_alpha()
 
-        self.area.blit(self.font.render('Стенки поля - препятствия', True, 'black'), (265, 10))
+        self.area.blit(self.font.render('Стенки поля - препятствия', True, 'white'), (265, 10))
         pygame.draw.rect(self.area, 'black', (183, 100, 280, 80), 2)
         pygame.draw.rect(self.area, 'black', (636, 100, 280, 80), 2)
 
@@ -103,12 +102,14 @@ class Area2:
 class Area3:
     def __init__(self):
         self.font = pygame.font.Font('fonts/result-font.ttf', 40)
-        self.area = pygame.Surface([1080, 200])
+        image = pygame.Surface([1080, 200], pygame.SRCALPHA, 32)
+        self.area = image.convert_alpha()
         self.cur_x = 245
+        self.im = load_image('settings_area3.png')
 
     def update(self, x):
-        self.area.fill(pygame.Color("white"))
-        self.area.blit(self.font.render('Чувствительность машинки', True, 'black'), (255, 10))
+        self.area.blit(self.im, (0, 0))
+        self.area.blit(self.font.render('Чувствительность машинки', True, 'white'), (255, 10))
         pygame.draw.rect(self.area, 'grey', (245, 150, 600, 10))
         self.cur_x = x
         pygame.draw.circle(self.area, 'red', (self.cur_x - 9, 155), 25)
@@ -124,12 +125,9 @@ def settings_screen(screen):
     showing = True
     # picture = pygame.transform.scale(load_image('pause_screen.png'), SIZE)
 
-    image = pygame.Surface([*SIZE])
-    image.fill('white')
+    image = load_image('settings_screen.png')
 
-    pygame.draw.rect(image, 'red', (0, 31, 334, 86))
-    image.blit(font.render('Назад', True, 'white'), (90, 50))
-    start_button = pygame.Rect(0, 31, 334, 86)
+    start_button = pygame.Rect(0, 30, 335, 89)
 
     area1 = Area1()
     area2 = Area2()
