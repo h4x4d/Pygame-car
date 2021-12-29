@@ -10,17 +10,25 @@ collide = pygame.sprite.Group()
 
 
 class ConeSprite(pygame.sprite.Sprite):
-    def __init__(self, speed, *groups):
+    def __init__(self, speed, p, *groups):
         super().__init__(*groups)
         self.image = load_image('cone.png')
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = random.randint(BOARD_POS[0], BOARD_SIZE[0] +
-                                                  BOARD_POS[0] - 30), 100
+        if p == 0:
+            r1, r2 = BOARD_POS[0], BOARD_POS[0] + BOARD_SIZE[0] // 3 - 50
+        if p == 1:
+            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 - 50, \
+                     BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 50
+        if p == 2:
+            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 50, \
+                     BOARD_POS[0] + BOARD_SIZE[0] - 50
+        self.rect.x, self.rect.y = random.randint(r1, r2), BOARD_POS[1]
         self.speed = speed
         if pygame.sprite.spritecollideany(self, collide):
             self.image = pygame.Surface([1, 1], pygame.SRCALPHA, 32)
             self.rect.x = 1
             self.rect.y = 1
+
 
     def update(self, car):
         self.rect.y += self.speed
@@ -29,7 +37,7 @@ class ConeSprite(pygame.sprite.Sprite):
 
 
 class CarTrSprite(pygame.sprite.Sprite):
-    def __init__(self, speed, *groups):
+    def __init__(self, speed, p, *groups):
         super().__init__(*groups)
         choice = random.choice(['car.png', 'car2.png', 'car3.png', 'car4.png'])
         self.image = load_image(choice)
@@ -37,8 +45,15 @@ class CarTrSprite(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (100, 200))
         self.image = pygame.transform.flip(self.image, False, True)
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = random.randint(BOARD_POS[0], BOARD_SIZE[0] +
-                                                  BOARD_POS[0] - 100), -50
+        if p == 0:
+            r1, r2 = BOARD_POS[0], BOARD_POS[0] + BOARD_SIZE[0] // 3 - 100
+        if p == 1:
+            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 - 50, \
+                     BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 100
+        if p == 2:
+            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 50, \
+                     BOARD_POS[0] + BOARD_SIZE[0] - 100
+        self.rect.x, self.rect.y = random.randint(r1, r2), -50
         if pygame.sprite.spritecollideany(self, collide):
             self.image = pygame.Surface([1, 1], pygame.SRCALPHA, 32)
             self.rect.x = 1
@@ -72,12 +87,59 @@ class FieldSprite(pygame.sprite.Sprite):
         if self.p < 0:
             self.p = 600
 
-        choice = random.randint(0, 200)
-        if choice in [0, 1, 2, 5]:
-            c = ConeSprite(self.speed, self.cones)
+        choice = random.randint(0, 300)
+        if choice == 0:
+            for i in range(2):
+                r = random.randint(0, 1)
+                if r == 0:
+                    c = ConeSprite(self.speed, i, self.cones)
+                else:
+                    c = CarTrSprite(self.speed, i, self.cones)
+                collide.add(c)
+
+        elif choice == 1:
+            for i in range(0, 3, 2):
+                r = random.randint(0, 1)
+                if r == 0:
+                    c = ConeSprite(self.speed, i, self.cones)
+                else:
+                    c = CarTrSprite(self.speed, i, self.cones)
+                collide.add(c)
+
+        elif choice == 2:
+            for i in range(1, 3):
+                r = random.randint(0, 1)
+                if r == 0:
+                    c = ConeSprite(self.speed, i, self.cones)
+                else:
+                    c = CarTrSprite(self.speed, i, self.cones)
+                collide.add(c)
+
+        elif choice == 3:
+            i = 0
+            r = random.randint(0, 1)
+            if r == 0:
+                c = ConeSprite(self.speed, i, self.cones)
+            else:
+                c = CarTrSprite(self.speed, i, self.cones)
             collide.add(c)
-        elif choice in [3, 4]:
-            c = CarTrSprite(self.speed, self.cones)
+
+        elif choice == 4:
+            i = 1
+            r = random.randint(0, 1)
+            if r == 0:
+                c = ConeSprite(self.speed, i, self.cones)
+            else:
+                c = CarTrSprite(self.speed, i, self.cones)
+            collide.add(c)
+
+        elif choice == 5:
+            i = 2
+            r = random.randint(0, 1)
+            if r == 0:
+                c = ConeSprite(self.speed, i, self.cones)
+            else:
+                c = CarTrSprite(self.speed, i, self.cones)
             collide.add(c)
 
         self.image.blit(self.full_image, (0, 0), (0, self.p, 500, 600))
