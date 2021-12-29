@@ -87,9 +87,37 @@ class FieldSprite(pygame.sprite.Sprite):
         if self.p < 0:
             self.p = 600
 
-        choice = random.randint(0, 300)
-        if choice == 0:
-            for i in range(2):
+        if self.p % 500 == 0:
+            choice = random.randint(0, 6)
+            if choice == 0:
+                for i in range(2):
+                    r = random.randint(0, 1)
+                    if r == 0:
+                        c = ConeSprite(self.speed, i, self.cones)
+                    else:
+                        c = CarTrSprite(self.speed, i, self.cones)
+                    collide.add(c)
+
+            elif choice == 1:
+                for i in range(0, 3, 2):
+                    r = random.randint(0, 1)
+                    if r == 0:
+                        c = ConeSprite(self.speed, i, self.cones)
+                    else:
+                        c = CarTrSprite(self.speed, i, self.cones)
+                    collide.add(c)
+
+            elif choice == 2:
+                for i in range(1, 3):
+                    r = random.randint(0, 1)
+                    if r == 0:
+                        c = ConeSprite(self.speed, i, self.cones)
+                    else:
+                        c = CarTrSprite(self.speed, i, self.cones)
+                    collide.add(c)
+
+            elif choice == 3:
+                i = 0
                 r = random.randint(0, 1)
                 if r == 0:
                     c = ConeSprite(self.speed, i, self.cones)
@@ -97,8 +125,8 @@ class FieldSprite(pygame.sprite.Sprite):
                     c = CarTrSprite(self.speed, i, self.cones)
                 collide.add(c)
 
-        elif choice == 1:
-            for i in range(0, 3, 2):
+            elif choice == 4:
+                i = 1
                 r = random.randint(0, 1)
                 if r == 0:
                     c = ConeSprite(self.speed, i, self.cones)
@@ -106,41 +134,14 @@ class FieldSprite(pygame.sprite.Sprite):
                     c = CarTrSprite(self.speed, i, self.cones)
                 collide.add(c)
 
-        elif choice == 2:
-            for i in range(1, 3):
+            elif choice == 5:
+                i = 2
                 r = random.randint(0, 1)
                 if r == 0:
                     c = ConeSprite(self.speed, i, self.cones)
                 else:
                     c = CarTrSprite(self.speed, i, self.cones)
                 collide.add(c)
-
-        elif choice == 3:
-            i = 0
-            r = random.randint(0, 1)
-            if r == 0:
-                c = ConeSprite(self.speed, i, self.cones)
-            else:
-                c = CarTrSprite(self.speed, i, self.cones)
-            collide.add(c)
-
-        elif choice == 4:
-            i = 1
-            r = random.randint(0, 1)
-            if r == 0:
-                c = ConeSprite(self.speed, i, self.cones)
-            else:
-                c = CarTrSprite(self.speed, i, self.cones)
-            collide.add(c)
-
-        elif choice == 5:
-            i = 2
-            r = random.randint(0, 1)
-            if r == 0:
-                c = ConeSprite(self.speed, i, self.cones)
-            else:
-                c = CarTrSprite(self.speed, i, self.cones)
-            collide.add(c)
 
         self.image.blit(self.full_image, (0, 0), (0, self.p, 500, 600))
         self.cones.update(car)
