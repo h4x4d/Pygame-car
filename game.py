@@ -32,6 +32,8 @@ class Game:
         except FinishException:
             return 'finish'
         self.all_sprites.draw(self.screen)
+        self.screen.blit(self.image, (0, 0))
+        self.coins.draw(self.screen)
 
     def update_car(self, state):
         self.car.update(state)

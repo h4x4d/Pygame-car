@@ -38,8 +38,7 @@ class CarTrSprite(pygame.sprite.Sprite):
         self.image = pygame.transform.flip(self.image, False, True)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = random.randint(BOARD_POS[0], BOARD_SIZE[0] +
-                                                  BOARD_POS[0] - 100), \
-                                   BOARD_POS[1]
+                                                  BOARD_POS[0] - 100), -50
         if pygame.sprite.spritecollideany(self, collide):
             self.image = pygame.Surface([1, 1], pygame.SRCALPHA, 32)
             self.rect.x = 1
@@ -47,7 +46,7 @@ class CarTrSprite(pygame.sprite.Sprite):
 
     def update(self, car):
         self.rect.y += self.speed
-        if self.rect.y >= BOARD_POS[1] + BOARD_SIZE[1] - 200:
+        if self.rect.y >= BOARD_POS[1] + BOARD_SIZE[1]:
             self.image = pygame.Surface([1, 1], pygame.SRCALPHA, 32)
 
 
@@ -74,10 +73,10 @@ class FieldSprite(pygame.sprite.Sprite):
             self.p = 600
 
         choice = random.randint(0, 200)
-        if choice == 0 or choice == 2:
+        if choice in [0, 1, 2, 5]:
             c = ConeSprite(self.speed, self.cones)
             collide.add(c)
-        elif choice == 1:
+        elif choice in [3, 4]:
             c = CarTrSprite(self.speed, self.cones)
             collide.add(c)
 
