@@ -14,12 +14,17 @@ def finish_screen(screen, number):
     font = pygame.font.Font('fonts/result-font2.ttf', 70)
     i = font.render(number + ' очков', True, 'white')
     text_rect = i.get_rect(center=(WIDTH / 2, 330))
+
+    font2 = pygame.font.Font('fonts/result-font2.ttf', 15)
+    enter = font2.render('Press enter to restart', True, 'black')
+
     conn = sqlite3.connect('result.db')
     cur = conn.cursor()
     cur.execute(f'INSERT INTO results VALUES('
                 f'"{datetime.date.today().strftime("%d.%m.%Y")}", {number})')
     conn.commit()
     screen.blit(i, text_rect)
+    screen.blit(enter, (WIDTH - 170, HEIGHT - 20))
 
     start_button = pygame.Rect(400, 70, 400, 400)
     main_button = pygame.Rect(400, 70, 400, 492)
@@ -35,5 +40,7 @@ def finish_screen(screen, number):
                         return 'start'
                     elif main_button.collidepoint(*event.pos):
                         return 'main'
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                return 'start'
 
         pygame.display.flip()

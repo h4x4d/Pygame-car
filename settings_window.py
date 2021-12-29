@@ -45,22 +45,24 @@ class Area1:
         self.area.blit(self.font_small.render('Жёлтая', True, 'black'), (640, 125))
         self.area.blit(self.font_small.render('Белая', True, 'black'), (920, 125))
 
+        return self.get_area()
+
+    def get_area(self):
         return self.area
 
     def get_value(self):
-        if self.cur_button == (28, 102, 246, 76): #кр
+        if self.cur_button == (28, 102, 246, 76):
             return 'car2'
-        elif self.cur_button == (294, 102, 246, 76):#син
+        elif self.cur_button == (294, 102, 246, 76):
             return 'car'
-        elif self.cur_button == (560, 102, 246, 76):#жел
+        elif self.cur_button == (560, 102, 246, 76):
             return 'car3'
-        elif self.cur_button == (826, 102, 246, 76):#бел
+        elif self.cur_button == (826, 102, 246, 76):
             return 'car4'
 
 
 class Area2:
     def __init__(self):
-
         self.font = pygame.font.Font('fonts/result-font.ttf', 40)
         self.font_small = pygame.font.Font('fonts/result-font.ttf', 20)
 
@@ -90,6 +92,9 @@ class Area2:
         self.area.blit(self.font_small.render('Выключить', True, 'black'), (260, 125))
         self.area.blit(self.font_small.render('Включить', True, 'black'), (725, 125))
 
+        return self.get_area()
+
+    def get_area(self):
         return self.area
 
     def get_value(self):
@@ -111,31 +116,39 @@ class Area3:
         self.area.blit(self.im, (0, 0))
         self.area.blit(self.font.render('Чувствительность машинки', True, 'white'), (255, 10))
         pygame.draw.rect(self.area, 'grey', (245, 150, 600, 10))
+
         self.cur_x = x
+
         pygame.draw.circle(self.area, 'red', (self.cur_x - 9, 155), 25)
+        return self.get_area()
+
+    def get_area(self):
         return self.area
 
     def get_value(self):
         return (self.cur_x - 245) // 40 + 5
 
 
-def settings_screen(screen):
-    font = pygame.font.Font('fonts/result-font.ttf', 40)
-
+def settings_screen(screen, areas=None):
     showing = True
-    # picture = pygame.transform.scale(load_image('pause_screen.png'), SIZE)
 
     image = load_image('settings_screen.png')
-
     start_button = pygame.Rect(0, 30, 335, 89)
 
-    area1 = Area1()
-    area2 = Area2()
-    area3 = Area3()
+    if areas:
+        area1, area2, area3 = areas[0], areas[1], areas[2]
 
-    image.blit(area1.update((28, 102)), (10, 130))
-    image.blit(area2.update((189, 109)), (10, 340))
-    image.blit(area3.update(245), (10, 550))
+        image.blit(area1.get_area(), (10, 130))
+        image.blit(area2.get_area(), (10, 340))
+        image.blit(area3.get_area(), (10, 550))
+    else:
+        area1 = Area1()
+        area2 = Area2()
+        area3 = Area3()
+
+        image.blit(area1.update((28, 102)), (10, 130))
+        image.blit(area2.update((189, 109)), (10, 340))
+        image.blit(area3.update(245), (10, 550))
 
     screen.blit(image, (0, 0))
 
@@ -149,7 +162,8 @@ def settings_screen(screen):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if start_button.collidepoint(*event.pos):
-                        return 'first', area1.get_value(), area2.get_value(), area3.get_value()
+                        return 'first', [area1, area2, area3], \
+                               area1.get_value(), area2.get_value(), area3.get_value()
                     if event.pos[1]:
                         image.blit(area1.update(event.pos), (10, 130))
                     if event.pos[1]:

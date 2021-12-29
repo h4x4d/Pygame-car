@@ -8,7 +8,7 @@ from paused import pause_screen
 from finish import finish_screen
 
 args = ARGS
-
+areas = None
 
 pygame.init()
 pygame.display.set_caption('Car')
@@ -24,7 +24,10 @@ while True:
         elif action == 'start':
             game = Game(screen, args[0])
         elif action == 'settings':
-            action, *args = settings_screen(screen)
+            if areas:
+                action, areas, *args = settings_screen(screen, areas)
+            else:
+                action, areas, *args = settings_screen(screen)
             if action == 'close':
                 exit()
         elif action == 'results':
@@ -50,14 +53,20 @@ while True:
         if pause == 'main':
             break
 
-        if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            game.update_car(args[2])
-        elif pygame.key.get_pressed()[pygame.K_LEFT]:
-            game.update_car(-args[2])
         finish = game.update()
         n = game.coins.sprites()[0].text
-        if n == '500' or n == '1000':
+        if int(n) % 500 == 0:
             game.board.sprites()[0].speed += 5
+
+        if finish is None:
+            if pygame.key.get_pressed()[pygame.K_RIGHT] or \
+                    pygame.key.get_pressed()[pygame.K_d]:
+                finish = game.update_car(args[1], args[2])
+
+            elif pygame.key.get_pressed()[pygame.K_LEFT] or \
+                    pygame.key.get_pressed()[pygame.K_a]:
+                finish = game.update_car(args[1], -args[2])
+
         if finish:
             finish = finish_screen(screen, game.coins.sprites()[0].coin())
             if finish == 'start':

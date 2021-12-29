@@ -15,6 +15,8 @@ def load_image(name, colorkey=None):
         image = image.convert()
         if colorkey == -1:
             colorkey = image.get_at((0, 0))
+        elif colorkey == -2:
+            colorkey = image.get_at((310, 110))
         image.set_colorkey(colorkey)
     else:
         image = image.convert_alpha()

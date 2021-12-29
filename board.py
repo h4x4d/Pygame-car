@@ -5,7 +5,6 @@ from settings.constants import CAR_SIZE
 from loader import load_image
 from exc import FinishException
 
-x, y = BOARD_SIZE
 collide = pygame.sprite.Group()
 
 
@@ -29,7 +28,6 @@ class ConeSprite(pygame.sprite.Sprite):
             self.rect.x = 1
             self.rect.y = 1
 
-
     def update(self, car):
         self.rect.y += self.speed
         if self.rect.y > BOARD_POS[1] + BOARD_SIZE[1]:
@@ -40,7 +38,7 @@ class CarTrSprite(pygame.sprite.Sprite):
     def __init__(self, speed, p, *groups):
         super().__init__(*groups)
         choice = random.choice(['car.png', 'car2.png', 'car3.png', 'car4.png'])
-        self.image = load_image(choice)
+        self.image = load_image(choice, -1)
         self.speed = speed
         self.image = pygame.transform.scale(self.image, (100, 200))
         self.image = pygame.transform.flip(self.image, False, True)
@@ -71,7 +69,7 @@ class FieldSprite(pygame.sprite.Sprite):
     def __init__(self, *groups):
         super().__init__(*groups)
         self.full_image = load_image('road.png')
-        self.image = pygame.Surface((500, 600))
+        self.image = pygame.Surface(BOARD_SIZE)
         self.image.blit(self.full_image, (0, 0))
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = BOARD_POS
@@ -201,9 +199,12 @@ class CarSprite(pygame.sprite.Sprite):
 
     def update(self, *args):
         if args:
-            if BOARD_POS[0] + BOARD_SIZE[0] - CAR_SIZE[0] > \
-                    self.rect.x + args[0] > BOARD_POS[0]:
+            if BOARD_POS[0] + BOARD_SIZE[0] - CAR_SIZE[0] >= \
+                    self.rect.x + args[0] >= BOARD_POS[0]:
                 self.rect.x += args[0]
+            else:
+                if args[-1] == 'вкл':
+                    raise FinishException
 
 
 class PauseSprite(pygame.sprite.Sprite):
@@ -223,9 +224,7 @@ def board_creator(car, all_sprites, screen, car_sprite, coins_sprite,
                   board_sprite):
 
     FieldSprite(board_sprite)
-
     CoinsSprite(screen, all_sprites, coins_sprite)
-
     CarSprite(car, all_sprites, car_sprite)
-
     PauseSprite(all_sprites)
+

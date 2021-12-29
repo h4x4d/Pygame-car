@@ -9,17 +9,18 @@ class Game:
     def __init__(self, screen, car):
         self.screen = screen
 
-        self.image = pygame.transform.scale(load_image('process.png'), SIZE)
+        self.image = pygame.transform.scale(load_image('process.png', -2), SIZE)
         screen.blit(self.image, (0, 0))
 
         self.all_sprites = pygame.sprite.Group()
         self.car = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
         self.board = pygame.sprite.Group()
+
         self.pause_button = pygame.Rect(950, 35, 100, 100)
 
-        board_creator(car, self.all_sprites, self.screen, self.car, self.coins,
-                      self.board)
+        self.field_boards = pygame.sprite.Group()
+        board_creator(car, self.all_sprites, self.screen, self.car, self.coins, self.board)
 
         self.screen.blit(self.image, (0, 0))
 
@@ -32,8 +33,13 @@ class Game:
         except FinishException:
             return 'finish'
         self.all_sprites.draw(self.screen)
+
         self.screen.blit(self.image, (0, 0))
         self.coins.draw(self.screen)
 
-    def update_car(self, state):
-        self.car.update(state)
+    def update_car(self, value, state):
+        try:
+            self.car.update(state, value)
+        except FinishException:
+            return 'finish'
+
