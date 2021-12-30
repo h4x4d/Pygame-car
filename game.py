@@ -17,11 +17,13 @@ class Game:
         self.car = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
         self.board = pygame.sprite.Group()
+        self.cones = pygame.sprite.Group()
 
         self.pause_button = pygame.Rect(950, 35, 100, 100)
 
         self.field_boards = pygame.sprite.Group()
-        board_creator(car, self.all_sprites, self.screen, self.car, self.coins, self.board)
+        board_creator(car, self.all_sprites, self.screen, self.car,
+                      self.coins, self.board, self.cones)
 
         self.screen.blit(self.image, (0, 0))
 
@@ -54,6 +56,7 @@ class Game:
             self.screen.blit(self.image, (0, 0))
             self.board.draw(self.screen)
             self.car.draw(self.screen)
+            self.cones.draw(self.screen)
             self.coins.draw(self.screen)
             if i != 0:
                 self.screen.blit(t, text_rect)

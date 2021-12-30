@@ -64,15 +64,17 @@ class CarTrSprite(pygame.sprite.Sprite):
 
 
 class FieldSprite(pygame.sprite.Sprite):
-    def __init__(self, *groups):
+    def __init__(self, cones_sprite, *groups):
         super().__init__(*groups)
+        self.cones = cones_sprite
+
         self.full_image = load_image('road.png')
         self.image = pygame.Surface(BOARD_SIZE)
         self.image.blit(self.full_image, (0, 0))
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = BOARD_POS
 
-        self.cones = pygame.sprite.Group()
+
 
         self.speed = 5
 
@@ -182,7 +184,6 @@ class CoinsSprite(pygame.sprite.Sprite):
 class CarSprite(pygame.sprite.Sprite):
     def __init__(self, car, *groups):
         super().__init__(*groups)
-        # машинка по-умолчанию
         self.image = pygame.transform.scale(load_image(f'{car}.png', -1),
                                             CAR_SIZE)
 
@@ -215,9 +216,9 @@ class PauseSprite(pygame.sprite.Sprite):
 
 
 def board_creator(car, all_sprites, screen, car_sprite, coins_sprite,
-                  board_sprite):
+                  board_sprite, cones_sprite):
 
-    FieldSprite(board_sprite)
+    FieldSprite(cones_sprite, board_sprite)
     CoinsSprite(screen, all_sprites, coins_sprite)
     CarSprite(car, all_sprites, car_sprite)
     PauseSprite(all_sprites)
