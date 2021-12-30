@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from settings.constants import *
 from settings_window import settings_screen
@@ -23,6 +25,16 @@ while True:
             exit()
         elif action == 'start':
             game = Game(screen, args[0])
+            finish = game.update()
+            pygame.display.flip()
+            for i in range(3, -1, -1):
+                font = pygame.font.Font('fonts/result-font2.ttf', 70)
+                i = font.render(f'{i}', True, 'white')
+                text_rect = i.get_rect(center=(WIDTH / 2, 330))
+                time.sleep(0.5)
+                game.update()
+                screen.blit(i, text_rect)
+                pygame.display.flip()
         elif action == 'settings':
             if areas:
                 action, areas, *args = settings_screen(screen, areas)
@@ -47,6 +59,17 @@ while True:
                     pause = pause_screen(screen)
                     if pause == 'start':
                         game = Game(screen, args[0])
+                        finish = game.update()
+                        pygame.display.flip()
+                        for i in range(3, -1, -1):
+                            font = pygame.font.Font('fonts/result-font2.ttf',
+                                                    70)
+                            i = font.render(f'{i}', True, 'white')
+                            text_rect = i.get_rect(center=(WIDTH / 2, 330))
+                            time.sleep(0.5)
+                            game.update()
+                            screen.blit(i, text_rect)
+                            pygame.display.flip()
                     elif pause == 'main':
                         break
 
@@ -55,8 +78,8 @@ while True:
 
         finish = game.update()
         n = game.coins.sprites()[0].text
-        if int(n) % 500 == 0:
-            game.board.sprites()[0].speed += 5
+        if int(n) == 500 or int(n) == 1000:
+            game.board.sprites()[0].speed += 3
 
         if finish is None:
             if pygame.key.get_pressed()[pygame.K_RIGHT] or \

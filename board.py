@@ -46,10 +46,10 @@ class CarTrSprite(pygame.sprite.Sprite):
         if p == 0:
             r1, r2 = BOARD_POS[0], BOARD_POS[0] + BOARD_SIZE[0] // 3 - 100
         if p == 1:
-            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 - 50, \
+            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 - 100, \
                      BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 100
         if p == 2:
-            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 50, \
+            r1, r2 = BOARD_POS[0] + BOARD_SIZE[0] // 3 * 2 - 100, \
                      BOARD_POS[0] + BOARD_SIZE[0] - 100
         self.rect.x, self.rect.y = random.randint(r1, r2), -50
         if pygame.sprite.spritecollideany(self, collide):
@@ -82,11 +82,11 @@ class FieldSprite(pygame.sprite.Sprite):
 
     def update(self, screen, car):
         self.p -= self.speed
-        if self.p < 0:
+        if self.p <= 0:
             self.p = 600
 
-        if self.p % 500 == 0:
-            choice = random.randint(0, 6)
+        if self.p in (500, 504, 501):
+            choice = random.randint(0, 5)
             if choice == 0:
                 for i in range(2):
                     r = random.randint(0, 1)
