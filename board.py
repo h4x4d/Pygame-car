@@ -64,8 +64,6 @@ class CarTrSprite(pygame.sprite.Sprite):
 
 
 class FieldSprite(pygame.sprite.Sprite):
-    # игровое поле
-
     def __init__(self, *groups):
         super().__init__(*groups)
         self.full_image = load_image('road.png')
@@ -85,7 +83,7 @@ class FieldSprite(pygame.sprite.Sprite):
         if self.p <= 0:
             self.p = 600
 
-        if self.p in (500, 504, 501):
+        if self.p in (500, 502, 504, 501):
             choice = random.randint(0, 5)
             if choice == 0:
                 for i in range(2):
@@ -151,8 +149,6 @@ class FieldSprite(pygame.sprite.Sprite):
 
 
 class CoinsSprite(pygame.sprite.Sprite):
-    # цифры
-
     def __init__(self, screen, *groups):
         super().__init__(*groups)
         self.screen = screen
@@ -184,8 +180,6 @@ class CoinsSprite(pygame.sprite.Sprite):
 
 
 class CarSprite(pygame.sprite.Sprite):
-    # машинка
-
     def __init__(self, car, *groups):
         super().__init__(*groups)
         # машинка по-умолчанию

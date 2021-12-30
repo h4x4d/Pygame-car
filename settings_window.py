@@ -158,7 +158,7 @@ def settings_screen(screen, areas=None):
     while showing:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return 'close'
+                exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if start_button.collidepoint(*event.pos):

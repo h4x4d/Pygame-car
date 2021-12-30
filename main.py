@@ -21,32 +21,18 @@ while True:
     action = 'first'
     while action == 'first':
         action = start_screen(screen)
-        if action == 'close':
-            exit()
-        elif action == 'start':
+        if action == 'start':
             game = Game(screen, args[0])
             finish = game.update()
             pygame.display.flip()
-            for i in range(3, -1, -1):
-                font = pygame.font.Font('fonts/result-font2.ttf', 70)
-                i = font.render(f'{i}', True, 'white')
-                text_rect = i.get_rect(center=(WIDTH / 2, 330))
-                time.sleep(0.5)
-                game.update()
-                screen.blit(i, text_rect)
-                pygame.display.flip()
+            game.timer()
         elif action == 'settings':
             if areas:
                 action, areas, *args = settings_screen(screen, areas)
             else:
                 action, areas, *args = settings_screen(screen)
-            if action == 'close':
-                exit()
         elif action == 'results':
             action = results_screen(screen)
-            if action == 'close':
-                exit()
-
     running = True
     pause = ''
 
@@ -57,19 +43,15 @@ while True:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if game.pause_button.collidepoint(*event.pos):
                     pause = pause_screen(screen)
-                    if pause == 'start':
+                    if pause == '':
+                        game.update()
+                        pygame.display.flip()
+                        game.timer()
+                    elif pause == 'start':
                         game = Game(screen, args[0])
                         finish = game.update()
                         pygame.display.flip()
-                        for i in range(3, -1, -1):
-                            font = pygame.font.Font('fonts/result-font2.ttf',
-                                                    70)
-                            i = font.render(f'{i}', True, 'white')
-                            text_rect = i.get_rect(center=(WIDTH / 2, 330))
-                            time.sleep(0.5)
-                            game.update()
-                            screen.blit(i, text_rect)
-                            pygame.display.flip()
+                        game.timer()
                     elif pause == 'main':
                         break
 
@@ -78,7 +60,7 @@ while True:
 
         finish = game.update()
         n = game.coins.sprites()[0].text
-        if int(n) == 500 or int(n) == 1000:
+        if int(n) == 500 or int(n) == 1000 or int(n) == 2000:
             game.board.sprites()[0].speed += 3
 
         if finish is None:

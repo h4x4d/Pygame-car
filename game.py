@@ -1,4 +1,5 @@
 import pygame
+import time
 from exc import FinishException
 from board import board_creator
 from loader import load_image
@@ -42,4 +43,19 @@ class Game:
             self.car.update(state, value)
         except FinishException:
             return 'finish'
+
+    def timer(self):
+        for i in range(3, -1, -1):
+            font = pygame.font.Font('fonts/result-font2.ttf', 70)
+            t = font.render(f'{i}', False, 'white')
+            text_rect = t.get_rect(center=(SIZE[0] / 2, 330))
+            time.sleep(0.5)
+
+            self.screen.blit(self.image, (0, 0))
+            self.board.draw(self.screen)
+            self.car.draw(self.screen)
+            self.coins.draw(self.screen)
+            if i != 0:
+                self.screen.blit(t, text_rect)
+            pygame.display.flip()
 
